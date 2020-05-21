@@ -42,7 +42,7 @@ EXPECTED_MUTANTS = 14
 
 PYTHON = '"{}"'.format(sys.executable)
 
-file_to_mutate_contents = '\n'.join(file_to_mutate_lines) + '\n'
+file_to_mutate_contents = os.linesep.join(file_to_mutate_lines) + os.linesep
 
 test_file_contents = '''
 from foo import *
