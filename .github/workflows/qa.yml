@@ -1,0 +1,35 @@
+name: QA
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+    tags:
+
+jobs:
+  qa:
+    name: ${{ matrix.toxenv }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        toxenv:
+          - lint
+          - readme
+        python-version:
+          - "3.x"
+    env:
+      PY_COLORS: 1
+      TOXENV: ${{ matrix.toxenv }}
+    steps:
+      - uses: actions/checkout@master
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install tox
+        run: pip install tox
+      - name: Prepare test environment
+        run: tox --notest
+      - name: Test ${{ matrix.toxenv }}
+        run: tox
